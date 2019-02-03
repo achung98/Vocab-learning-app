@@ -14,7 +14,7 @@ pressed = false;
 x = 800;
 person = new Person(10, 540, 40, 60, 0, 255);
 bullet = new Bullet(55, 350, 20, 20, 5, 1);
-bulletWord = new Bullet(55, 268, 20, 20);
+bulletWord = new Bullet(55, 268, 20, 20); 
 
 let monsters = [];
 let xMons, yMons;
@@ -145,8 +145,8 @@ function draw() {
   yMons = monsters[0].look.y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
-    bullet.x = 55;
-    bullet.y = 350;
+    bullet.x = 260;
+    bullet.y = 470;
     monsters[0].health -= bullet.damage;
     if(monsters[0].health <= 0) {
       monsters[0].health = health;
