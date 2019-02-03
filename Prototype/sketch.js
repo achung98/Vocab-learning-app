@@ -23,6 +23,10 @@ let move = 0.75;
 let health = 1;
 let chase = false;
 
+// mic variables
+var mic;
+var volHistory = [];
+
 var img;
 var song_sound;
 var reward_sound;
@@ -55,6 +59,10 @@ function setup() {
 }
 
 
+
+  // mic setup
+  mic = new p5.AudioIn();
+  mic.start();
 
   img = loadImage(images[0]);
 
@@ -193,11 +201,23 @@ function draw() {
     x = 1000;
   }
 
-  //reward_sound.stop();
+  image(img, x,250,50,50);
+  x -= 1.6;
+   var vol = mic.getLevel();
+   volHistory.push(vol);
+   stroke(0, 0, 0, 90);
+   strokeWeight(4);
+   noFill();
+   beginShape();
+   for (var i = 0; i < volHistory.length; i++) {
+     var y = map(volHistory[i], 0, 1, height / 1.4, 0);
+     vertex(i, y);
+   }
+   endShape();
 
-  image(img, x,250,60,60);
-  //ellipse(x, 270, 40, 40);
-  x -= 7.6;
+   if (volHistory.length > width) {
+     volHistory.splice(0, 1);
+   }
 }
 
 function keyPressed() {
