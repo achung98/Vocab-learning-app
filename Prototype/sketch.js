@@ -1,19 +1,29 @@
 pressed = false;
 x = 400;
-person = new Person(10, 240, 40, 60, 0);
+person = new Person(10, 540, 40, 60, 0);
 bullet = new Bullet(55, 268, 20, 20);
+let monsters = [];
+
+for(let i = 0; i < 20; i++) {
+  monsters.push(new Monster(450+i*80, 560, 20, 20));
+}
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(700, 700);
 }
 
 function draw() {
   background(0);
 
 	stroke(255);
-	line(0, 300, 400, 300);
+	line(0, 600, 1000, 600);
 
 	person.show();
+
+  monsters.forEach(e => {
+    e.show();
+    e.move();
+  })
 
 	if(person.checkCollision(x)) {
 		x = 500;
@@ -31,10 +41,6 @@ function draw() {
 			pressed = false;
 		}
 	}
-
-	ellipse(x, 270, 40, 40);
-	x -= 1.6;
-
 }
 
 function keyPressed() {
