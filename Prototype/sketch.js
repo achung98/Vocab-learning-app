@@ -1,9 +1,6 @@
 let bg;
 pressed = false;
 x = 800;
-person = new Person(10, 540, 40, 60, 0, 255);
-bullet = new Bullet(55, 350, 20, 20, 5);
-bulletWord = new Bullet(55, 268, 20, 20);
 
 let monsters = [];
 let xMons, yMons;
@@ -36,10 +33,14 @@ function setup() {
   mic = new p5.AudioIn();
   mic.start();
 
+  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 0, 255);
+
+  bullet = new Bullet(260, 470, 20, 20, 5);
+  bulletWord = new Bullet(55, 268, 20, 20);
+
   img = loadImage(images[0]);
 
-  bg = loadImage('assets/bg.png');
-
+  bg = loadImage('assets/bg.png'); 
 
   var words = ['apple','banana','computer','house','glasses','dog'];
 
@@ -107,8 +108,8 @@ function draw() {
   yMons = monsters[0].y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
-    bullet.x = 55;
-    bullet.y = 350;
+    bullet.x = 260;
+    bullet.y = 470;
     monsters[0].health--;
     if(!monsters[0].health) {
       let temp = monsters.shift();
@@ -153,8 +154,9 @@ function draw() {
       console.log(k);
       //if (k == images.length) k = 0;
       img = loadImage(images[k]);
+
       person.money++;
-      bulletWord.x = 55;
+      bulletWord.x = 550;
       x = 800;
       console.log(person.money);
       pressed = false;

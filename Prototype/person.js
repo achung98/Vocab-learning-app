@@ -1,9 +1,7 @@
 class Person {
-	constructor(x, y, w, h, money, color, upgrades, power) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+	constructor(castleIcon, cannonIcon, money, color, upgrades, power) {
+		this.castleIcon = castleIcon;
+		this.cannonIcon = cannonIcon;
 		this.money = money;
 		this.color = color;
 		this.upgrades = {velocity: 0, power: 0};
@@ -11,9 +9,9 @@ class Person {
 	}
 
 	show() {
-		fill(this.color);
-		rect(this.x, this.y, this.w, this.h);
-		fill(255);
+		// Displays the castle and cannon
+		image(this.cannonIcon, 90, 380, this.castleIcon.width / 7, this.castleIcon.height / 7);
+		image(this.castleIcon, 10, 350, this.castleIcon.width / 5, this.castleIcon.height / 5);
 	}
 
 	getUpgrades(keyStroke, price) {
