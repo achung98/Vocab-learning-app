@@ -1,3 +1,14 @@
+//find pictures/gif for monsters [x]
+//fix when words go past [x]
+//add pictures for person and gun[x]
+//add more words and pictures [x]
+//add bomb sound [x]
+//add solution
+//monster hits person => go back [x]
+//reward sound (after "killing" the word) [x]
+//remove bulletWord, just kill it when say the word
+//make spanish?
+let pos = 0;
 let bg;
 pressed = false;
 x = 800;
@@ -17,20 +28,37 @@ var mic;
 var volHistory = [];
 
 var img;
+var song_sound;
+var reward_sound;
 var k = 0;
-var images = ['assets/apple.png',
-  'assets/banana.png',
-  'assets/computer.png',
-  'assets/house.png',
-  'assets/glasses.png',
-  'assets/dog.png'];
+var images = ['assets/apple.png','assets/banana.png',
+  'assets/computer.png','assets/house.png',
+  'assets/glasses.png','assets/dog.png',
+  'assets/chair.png','assets/watch.png',
+  'assets/truck.png','assets/fire.png',
+  'assets/car.png','assets/icecream.png',
+  'assets/shoes.png','assets/pencil.png','assets/tiger.png'
+  ];
 
-for(let i = 0; i < 20; i++) {
-  monsters.push(new Monster(450+i*80, 560, 20, 20, health));
-}
 
+
+//var gif;
 function setup() {
   createCanvas(1000, 700);
+  //shot_sound = loadSound('assets/shot.mp3');
+  reward_sound = loadSound('assets/reward.mp3');
+  
+  for(let i = 0; i < 20; i++) {
+  var mybird ;
+  mybird = createImg("assets/trump.gif");
+  mybird.size(80,80);
+  mybird.position(800+i*80,520);
+
+
+  monsters.push(new Monster(800+i*80, 520, 20, 20, health,mybird));
+}
+
+
 
   // mic setup
   mic = new p5.AudioIn();
@@ -41,7 +69,7 @@ function setup() {
   bg = loadImage('assets/bg.png');
 
 
-  var words = ['apple','banana','computer','house','glasses','dog'];
+  var words = ['apple','banana','computer','house','glasses','dog','chair','watch','truck','fire','car','ice cream','shoes','pencil','tiger'];
 
   startConverting();
 
@@ -103,16 +131,23 @@ function draw() {
   background(bg);
 	person.show();
 
-  xMons = monsters[0].x;
-  yMons = monsters[0].y;
+ 
+
+
+  xMons = monsters[0].look.x;
+  yMons = monsters[0].look.y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
+    //shot_sound.play();
     bullet.x = 55;
     bullet.y = 350;
     monsters[0].health--;
     if(!monsters[0].health) {
+      monsters[0].health = health;
+      console.log(monsters[0].health);
       let temp = monsters.shift();
-      temp.x = monsters[monsters.length-1].x+80;
+      //temp.x = monsters[monsters.length-1].x+80;
+      temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].look.y);
       monsters.push(temp);
       person.money++;
     }
@@ -128,7 +163,7 @@ function draw() {
     person.color = 150;
     person.money--;
     let temp = monsters.shift();
-    temp.x = monsters[monsters.length-1].x+80;
+    temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].y);
     monsters.push(temp);
   }
 
@@ -147,18 +182,23 @@ function draw() {
 	}
 
   if(pressed) {
-    bulletWord.show();
-    bulletWord.shot();
-    if(bulletWord.x >= x) {
-      console.log(k);
+    reward_sound.play()
       //if (k == images.length) k = 0;
       img = loadImage(images[k]);
       person.money++;
-      bulletWord.x = 55;
-      x = 800;
+      //bulletWord.x = 55;
+      x = 1000;
       console.log(person.money);
       pressed = false;
-    }
+    //bulletWord.show();
+    //bulletWord.shot();
+    //if(bulletWord.x >= x) {}
+  }
+  else if(x < 0){
+    if(k == images.length-1) k =0;
+    else k++;
+    img = loadImage(images[k]);
+    x = 1000;
   }
 
   image(img, x,250,50,50);
