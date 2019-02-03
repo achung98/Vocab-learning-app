@@ -1,41 +1,47 @@
 @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
-html, body {
-  margin: 0;
-  padding: 0;
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    position:absolute;
     font-family: 'Hind Siliguri', sans-serif;
 }
+
 canvas {
-  display: block;
+    display: block;
 }
 
 #play {
- margin-left: 46%;
- margin-top: 250px;
- padding-left: 40px;
-padding-right:40px;
-padding-top:15px;
-font-size: 30px;
-padding-bottom: 15px;
- text: 20px;
- background-color: #ddd;
-border: 5px solid white;
-  
+    margin-left: 46%;
+    margin-top: 250px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 15px;
+    font-size: 30px;
+    padding-bottom: 15px;
+    text: 20px;
+    background-color: #ddd;
+    border: 5px solid white;
+
 }
+
 #play:hover {
-    
+
     background-color: #4942B2;
     color: white;
 }
 
-#body1{
+#body1 {
     background-image: url("Video_game_background.jpg");
     background-size: 100% 100%;
 }
-#title1{
+
+#title1 {
     background: white;
     margin-top: 100px;
     margin-left: 600px;
-    margin-right:600px;
+    margin-right: 600px;
     border-right: -15px;
     width: 290px;
     padding: 10px;
@@ -45,5 +51,20 @@ border: 5px solid white;
     border-style: solid;
     border-color: darkred;
     border: 5px solid darkred;
-    
+}
+
+#home {
+    position: absolute;
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin-left: 40px;
+    margin-top:  8px;
+    cursor: pointer;
+    display:inline-block;
 }
