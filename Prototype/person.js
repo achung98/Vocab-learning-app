@@ -1,5 +1,5 @@
 class Person {
-	constructor(x, y, w, h, money, color, upgrades, power) {
+	constructor(x, y, w, h, money, color) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -7,7 +7,6 @@ class Person {
 		this.money = money;
 		this.color = color;
 		this.upgrades = {velocity: 0, power: 0};
-		this.power = 1;
 	}
 
 	show() {

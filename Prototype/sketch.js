@@ -2,13 +2,13 @@ let bg;
 pressed = false;
 x = 800;
 person = new Person(10, 540, 40, 60, 0, 255);
-bullet = new Bullet(55, 350, 20, 20, 5);
+bullet = new Bullet(55, 350, 20, 20, 5, 1);
 bulletWord = new Bullet(55, 268, 20, 20);
 
 let monsters = [];
 let xMons, yMons;
 let price = [5, 3];
-let move = 0.75;
+let move = 0.5;
 let health = 1;
 let chase = false;
 
@@ -22,7 +22,15 @@ var images = ['assets/apple.png',
   'assets/dog.png'];
 
 for(let i = 0; i < 20; i++) {
-  monsters.push(new Monster(450+i*80, 560, 20, 20, health));
+  let temp = i*(Math.random()*30+50);
+  if(i > 1) {
+    let temp2 = i*(Math.random()*30+50);
+    while(temp >= temp2) {
+      temp2 = i*(Math.random()*30+50);
+    }
+    temp = temp2;
+  }
+  monsters.push(new Monster(450+temp, 560, 20, 20, health));
 }
 
 function setup() {
@@ -95,14 +103,16 @@ function draw() {
   background(bg);
 	person.show();
 
+  health
   xMons = monsters[0].x;
   yMons = monsters[0].y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
     bullet.x = 55;
     bullet.y = 350;
-    monsters[0].health--;
-    if(!monsters[0].health) {
+    monsters[0].health -= bullet.damage;
+    if(monsters[0].health <= 0) {
+      monsters[0].health = health;
       let temp = monsters.shift();
       temp.x = monsters[monsters.length-1].x+80;
       monsters.push(temp);
@@ -165,7 +175,7 @@ function keyPressed() {
     bullet.speed += 1;
   } else if(cont == 1) {
     price[1] += 2;
-    bullet.damage += 1;
+    bullet.damage += 0.35;
   }
     checkUpgrades();
 }
