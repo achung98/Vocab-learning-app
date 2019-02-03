@@ -5,3 +5,10 @@ html, body {
 canvas {
   display: block;
 }
+
+#play {
+ margin-left: 45%;
+ margin-top: 50%;
+ padding: 30px;
+ text: 20px;
+}

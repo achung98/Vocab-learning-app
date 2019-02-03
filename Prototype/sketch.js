@@ -12,6 +12,10 @@ let move = 0.75;
 let health = 1;
 let chase = false;
 
+// mic variables
+var mic;
+var volHistory = [];
+
 var img;
 var k = 0;
 var images = ['assets/apple.png',
@@ -27,6 +31,10 @@ for(let i = 0; i < 20; i++) {
 
 function setup() {
   createCanvas(1000, 700);
+
+  // mic setup
+  mic = new p5.AudioIn();
+  mic.start();
 
   img = loadImage(images[0]);
 
@@ -154,8 +162,22 @@ function draw() {
   }
 
   image(img, x,250,50,50);
-  //ellipse(x, 270, 40, 40);
   x -= 1.6;
+   var vol = mic.getLevel();
+   volHistory.push(vol);
+   stroke(0, 0, 0, 90);
+   strokeWeight(4);
+   noFill();
+   beginShape();
+   for (var i = 0; i < volHistory.length; i++) {
+     var y = map(volHistory[i], 0, 1, height / 1.4, 0);
+     vertex(i, y);
+   }
+   endShape();
+
+   if (volHistory.length > width) {
+     volHistory.splice(0, 1);
+   }
 }
 
 function keyPressed() {
