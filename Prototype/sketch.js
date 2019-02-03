@@ -1,12 +1,15 @@
 let bg;
 pressed = false;
-x = 400;
+x = 800;
 person = new Person(10, 540, 40, 60, 0, 255);
 bullet = new Bullet(55, 350, 20, 20, 5);
-
 bulletWord = new Bullet(55, 268, 20, 20);
+
 let monsters = [];
 let xMons, yMons;
+let price = [5, 3];
+let move = 0.75;
+let health = 1;
 let chase = false;
 
 var img;
@@ -19,17 +22,17 @@ var images = ['assets/apple.png',
   'assets/dog.png'];
 
 for(let i = 0; i < 20; i++) {
-  monsters.push(new Monster(450+i*80, 560, 20, 20));
+  monsters.push(new Monster(450+i*80, 560, 20, 20, health));
 }
 
 function setup() {
-  createCanvas(700, 700);
+  createCanvas(1000, 700);
 
-  img = loadImage(images[0]); 
+  img = loadImage(images[0]);
 
   bg = loadImage('assets/bg.png');
 
-  
+
   var words = ['apple','banana','computer','house','glasses','dog'];
 
   startConverting();
@@ -63,16 +66,16 @@ function setup() {
             // }
           }
           //alert(finalTranscripts);
-          
+
           if(finalTranscripts.toLowerCase().includes(words[k])){
             pressed = true;
             console.log(k);
             if(k==words.length-1)  k = 0;
             else k++;
-            
-            
+
+
             console.log(finalTranscripts);
-          } 
+          }
           finalTranscripts = "";
 
 
@@ -90,28 +93,32 @@ function setup() {
 
 function draw() {
   background(bg);
-	stroke(255);
-	line(0, 600, 1000, 600);
 	person.show();
 
   xMons = monsters[0].x;
   yMons = monsters[0].y;
 
-  if(bullet.x >= xMons && bullet.y >= yMons) {
+  if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
     bullet.x = 55;
     bullet.y = 350;
-    let temp = monsters.shift();
-    temp.x = monsters[monsters.length-1].x+80;
-    monsters.push(temp);
+    monsters[0].health--;
+    if(!monsters[0].health) {
+      let temp = monsters.shift();
+      temp.x = monsters[monsters.length-1].x+80;
+      monsters.push(temp);
+      person.money++;
+    }
     chase = false;
   }
 
   textSize(30);
   fill(255);
-  text(person.money, 300, 150);
+  text(`Money: ${person.money}`, 40, 70);
+  text(`Upgrades: 1. Velocity: ${person.upgrades.velocity} 2. Power: ${person.upgrades.power}`, 40, 110);
 
   if(person.x >= xMons-50) {
     person.color = 150;
+    person.money--;
     let temp = monsters.shift();
     temp.x = monsters[monsters.length-1].x+80;
     monsters.push(temp);
@@ -119,7 +126,7 @@ function draw() {
 
   monsters.forEach(e => {
     e.show();
-    e.move();
+    e.move(move);
   })
 
 	/*if(person.checkCollision(x)) {
@@ -140,17 +147,37 @@ function draw() {
       img = loadImage(images[k]);
       person.money++;
       bulletWord.x = 55;
-      x = 500;
+      x = 800;
       console.log(person.money);
       pressed = false;
     }
   }
 
-  image(img, x,250,50,50); 
+  image(img, x,250,50,50);
   //ellipse(x, 270, 40, 40);
   x -= 1.6;
 }
 
 function keyPressed() {
-	pressed = true;
+	let cont = person.getUpgrades(key, price);
+  if(cont == 0) {
+    price[0] += 2;
+    bullet.speed += 1;
+  } else if(cont == 1) {
+    price[1] += 2;
+    bullet.damage += 1;
+  }
+    checkUpgrades();
+}
+
+function checkUpgrades() {
+  let monsterUpgrades = person.upgrades.velocity+person.upgrades.power;
+  /*if(person.upgrades.velocity == 2)
+    move += 0.25;*/
+    console.log(monsterUpgrades%3);
+  if(monsterUpgrades%3 == 0) {
+    move += 0.25;
+    health += 1;
+    monsters.map(e => e.health = health);
+  }
 }

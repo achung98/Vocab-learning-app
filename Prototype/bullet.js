@@ -1,5 +1,5 @@
 class Bullet {
-	constructor(x, y, r1, r2, speed) {
+	constructor(x, y, r1, r2, speed, damage) {
 		this.x = x;
 		this.y = y;
 		this.r1 = r1;
@@ -7,12 +7,12 @@ class Bullet {
 		this.speed = speed;
 	}
 
-	show() {
-		ellipse(this.x, this.y, this.r1, this.r2);
-	}
-
 	shot(){
 		this.x += 1;
+	}
+
+	show() {
+		ellipse(this.x, this.y, this.r1, this.r2);
 	}
 
 	chase(xT,yT){
