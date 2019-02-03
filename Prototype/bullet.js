@@ -11,6 +11,10 @@ class Bullet {
 		ellipse(this.x, this.y, this.r1, this.r2);
 	}
 
+	shot(){
+		this.x += 1;
+	}
+
 	chase(xT,yT){
 		var xC = this.x;
 		var yC = this.y;

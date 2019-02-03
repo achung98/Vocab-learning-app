@@ -1,37 +1,22 @@
-let bg;
-pressed = false;
+correct = false;
 x = 400;
-person = new Person(10, 540, 40, 60, 0, 255);
-bullet = new Bullet(55, 350, 20, 20, 5);
-
-bulletWord = new Bullet(55, 268, 20, 20);
-let monsters = [];
-let xMons, yMons;
-let chase = false;
-
+person = new Person(10, 240, 40, 60, 0);
+bullet = new Bullet(55, 268, 20, 20);
 var img;
 var k = 0;
-var images = ['assets/apple.png',
-  'assets/banana.png',
-  'assets/computer.png',
-  'assets/house.png',
-  'assets/glasses.png',
-  'assets/dog.png'];
-
-for(let i = 0; i < 20; i++) {
-  monsters.push(new Monster(450+i*80, 560, 20, 20));
-}
-
+var images = ['https://images.vexels.com/media/users/3/147164/isolated/lists/6bf92415c7b2651f512aa0db5a3e1aba-red-apple-icon-fruit.png',
+  'https://images.vexels.com/media/users/3/143061/isolated/lists/aaf71ed4e387a6838e1c521fbecde77a-banana-icon-fruit.png',
+  'https://images.vexels.com/media/users/3/158482/isolated/lists/03e067e4661b8a4171216df0ef8dbd4e-computer-illustration.png',
+  'https://images.vexels.com/media/users/3/137378/isolated/lists/c54a6e8d091727d3a9c470bb209688a7-home-city-house.png',
+  'https://images.vexels.com/media/users/3/159332/isolated/lists/c6b86ab959891c74b8d556c1e022c795-glasses-flat.png',
+  'https://images.vexels.com/media/users/3/158509/isolated/lists/e6a3a6c0c9ee65435e3b5cb2aef9693f-dog-puppy-flat.png'];
 function setup() {
-  createCanvas(700, 700);
-
+  createCanvas(400, 400);
   img = loadImage(images[0]); 
-
-  bg = loadImage('assets/bg.png');
 
   
   var words = ['apple','banana','computer','house','glasses','dog'];
-
+    
   startConverting();
 
     //var r = document.getElementById('result');
@@ -65,7 +50,7 @@ function setup() {
           //alert(finalTranscripts);
           
           if(finalTranscripts.toLowerCase().includes(words[k])){
-            pressed = true;
+          	correct = true;
             console.log(k);
             if(k==words.length-1)  k = 0;
             else k++;
@@ -85,72 +70,47 @@ function setup() {
       }
     }
 
-
 }
 
 function draw() {
-  background(bg);
+  background(0);
+
 	stroke(255);
-	line(0, 600, 1000, 600);
+	line(0, 300, 400, 300);
+
 	person.show();
 
-  xMons = monsters[0].x;
-  yMons = monsters[0].y;
-
-  if(bullet.x >= xMons && bullet.y >= yMons) {
-    bullet.x = 55;
-    bullet.y = 350;
-    let temp = monsters.shift();
-    temp.x = monsters[monsters.length-1].x+80;
-    monsters.push(temp);
-    chase = false;
-  }
-
-  textSize(30);
-  fill(255);
-  text(person.money, 300, 150);
-
-  if(person.x >= xMons-50) {
-    person.color = 150;
-    let temp = monsters.shift();
-    temp.x = monsters[monsters.length-1].x+80;
-    monsters.push(temp);
-  }
-
-  monsters.forEach(e => {
-    e.show();
-    e.move();
-  })
-
-	/*if(person.checkCollision(x)) {
+	if(person.checkCollision(x)) {
 		x = 500;
+		k++;
 		console.log(person.money);
-	}*/
-	if(frameCount%100 == 0 || chase) {
-    bullet.show();
-		chase = bullet.chase(xMons, yMons);
 	}
 
-  if(pressed) {
-    bulletWord.show();
-    bulletWord.shot();
-    if(bulletWord.x >= x) {
-      console.log(k);
-      //if (k == images.length) k = 0;
-      img = loadImage(images[k]);
-      person.money++;
-      bulletWord.x = 55;
-      x = 500;
-      console.log(person.money);
-      pressed = false;
-    }
-  }
+	if(correct) {
+		bullet.show();
+		bullet.shot();
+		if(bullet.x >= x) {
+			console.log(k);
+			//if (k == images.length) k = 0;
+			img = loadImage(images[k]);
+			person.money++;
+			bullet.x = 55;
+			x = 500;
+			console.log(person.money);
+			correct = false;
+		}
+	}
 
-  image(img, x,250,50,50); 
-  //ellipse(x, 270, 40, 40);
-  x -= 1.6;
+	//img = loadImage(images[k]);
+    // if (k == images.length-1) {
+    // 	img = loadImage(images[0])
+    // }
+    image(img, x,250,50,50); 
+	//ellipse(x, 270, 40, 40);
+	x -= 1.6;
+
 }
 
 function keyPressed() {
-	pressed = true;
+	correct = true;
 }

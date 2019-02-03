@@ -1,17 +1,15 @@
 class Person {
-	constructor(x, y, w, h, money, color) {
+	constructor(x, y, w, h, money) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		this.money = money;
-		this.color = color;
 	}
 
 	show() {
-		fill(this.color);
-		rect(this.x, this.y, this.w, this.h);
 		fill(255);
+		rect(this.x, this.y, this.w, this.h);
 	}
 
 	checkCollision(xWord) {
