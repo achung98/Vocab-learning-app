@@ -48,7 +48,7 @@ function setup() {
   //shot_sound = loadSound('assets/shot.mp3');
   reward_sound = loadSound('assets/reward.mp3');
 
-  for(let i = 0; i < 20; i++)
+  for(let i = 0; i < 20; i++){
   let temp = i*(Math.random()*30+50);
   if(i > 1) {
     let temp2 = i*(Math.random()*30+50);
@@ -57,6 +57,7 @@ function setup() {
     }
     temp = temp2;
   }
+
   var mybird ;
   mybird = createImg("assets/trump.gif");
   mybird.size(80,80);
@@ -64,11 +65,10 @@ function setup() {
 
 
   monsters.push(new Monster(800+i*80, 520, 20, 20, health,mybird));
-
+  }
   // mic setup
   mic = new p5.AudioIn();
   mic.start();
-}
 
   person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 5, 255);
 
