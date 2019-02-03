@@ -64,15 +64,13 @@ function setup() {
 
 
   monsters.push(new Monster(800+i*80, 520, 20, 20, health,mybird));
-}
-
-
 
   // mic setup
   mic = new p5.AudioIn();
   mic.start();
+}
 
-  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 0, 255);
+  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 5, 255);
 
   bullet = new Bullet(260, 470, 20, 20, 5);
   bulletWord = new Bullet(55, 268, 20, 20);
@@ -166,9 +164,15 @@ function draw() {
   text(`Money: ${person.money}`, 40, 70);
   text(`Upgrades: 1. Velocity: ${person.upgrades.velocity} 2. Power: ${person.upgrades.power}`, 40, 110);
 
-  if(person.x >= xMons-50) {
+  if(200 >= xMons-50) {
     person.color = 150;
     person.money--;
+    // no money the loose
+    if (person.money < 0) {
+      noLoop();
+      alert("Game Over~ You ran out of money =(" );
+      window.location.replace("index.html");
+    } 
     let temp = monsters.shift();
     temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].y);
     monsters.push(temp);
