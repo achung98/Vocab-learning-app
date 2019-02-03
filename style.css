@@ -1,7 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
 html, body {
   margin: 0;
   padding: 0;
+    font-family: 'Hind Siliguri', sans-serif;
 }
 canvas {
   display: block;
+}
+
+#play {
+ margin-left: 46%;
+ margin-top: 250px;
+ padding-left: 40px;
+padding-right:40px;
+padding-top:15px;
+font-size: 30px;
+padding-bottom: 15px;
+ text: 20px;
+ background-color: #ddd;
+border: 5px solid white;
+  
+}
+#play:hover {
+    
+    background-color: #4942B2;
+    color: white;
+}
+
+#body1{
+    background-image: url("Video_game_background.jpg");
+    background-size: 100% 100%;
+}
+#title1{
+    background: white;
+    margin-top: 100px;
+    margin-left: 600px;
+    margin-right:600px;
+    border-right: -15px;
+    width: 290px;
+    padding: 10px;
+    padding-right: -10px;
+    color: darkred;
+    text-align: center;
+    border-style: solid;
+    border-color: darkred;
+    border: 5px solid darkred;
+    
 }

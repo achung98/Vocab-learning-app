@@ -1,3 +1,14 @@
+//find pictures/gif for monsters [x]
+//fix when words go past [x]
+//add pictures for person and gun[x]
+//add more words and pictures [x]
+//add bomb sound [x]
+//add solution
+//monster hits person => go back [x]
+//reward sound (after "killing" the word) [x]
+//remove bulletWord, just kill it when say the word
+//make spanish?
+let pos = 0;
 let bg;
 pressed = false;
 x = 800;
@@ -12,16 +23,32 @@ let move = 0.5;
 let health = 1;
 let chase = false;
 
-var img;
-var k = 0;
-var images = ['assets/apple.png',
-  'assets/banana.png',
-  'assets/computer.png',
-  'assets/house.png',
-  'assets/glasses.png',
-  'assets/dog.png'];
+// mic variables
+var mic;
+var volHistory = [];
 
-for(let i = 0; i < 20; i++) {
+var img;
+var song_sound;
+var reward_sound;
+var k = 0;
+
+var images = ['assets/apple.png','assets/banana.png',
+  'assets/computer.png','assets/house.png',
+  'assets/glasses.png','assets/dog.png',
+  'assets/chair.png','assets/watch.png',
+  'assets/truck.png','assets/fire.png',
+  'assets/car.png','assets/icecream.png',
+  'assets/shoes.png','assets/pencil.png','assets/tiger.png'
+  ];
+
+
+//var gif;
+function setup() {
+  createCanvas(1500, 700);
+  //shot_sound = loadSound('assets/shot.mp3');
+  reward_sound = loadSound('assets/reward.mp3');
+
+  for(let i = 0; i < 20; i++)
   let temp = i*(Math.random()*30+50);
   if(i > 1) {
     let temp2 = i*(Math.random()*30+50);
@@ -30,18 +57,31 @@ for(let i = 0; i < 20; i++) {
     }
     temp = temp2;
   }
-  monsters.push(new Monster(450+temp, 560, 20, 20, health));
+  var mybird ;
+  mybird = createImg("assets/trump.gif");
+  mybird.size(80,80);
+  mybird.position(800+temp,520);
+
+
+  monsters.push(new Monster(800+i*80, 520, 20, 20, health,mybird));
 }
 
-function setup() {
-  createCanvas(1000, 700);
+
+
+  // mic setup
+  mic = new p5.AudioIn();
+  mic.start();
+
+  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 0, 255);
+
+  bullet = new Bullet(260, 470, 20, 20, 5);
+  bulletWord = new Bullet(55, 268, 20, 20);
 
   img = loadImage(images[0]);
 
   bg = loadImage('assets/bg.png');
 
-
-  var words = ['apple','banana','computer','house','glasses','dog'];
+  var words = ['apple','banana','computer','house','glasses','dog','chair','watch','truck','fire','car','ice cream','shoes','pencil','tiger'];
 
   startConverting();
 
@@ -103,9 +143,8 @@ function draw() {
   background(bg);
 	person.show();
 
-  health
-  xMons = monsters[0].x;
-  yMons = monsters[0].y;
+  xMons = monsters[0].look.x;
+  yMons = monsters[0].look.y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
     bullet.x = 55;
@@ -114,7 +153,8 @@ function draw() {
     if(monsters[0].health <= 0) {
       monsters[0].health = health;
       let temp = monsters.shift();
-      temp.x = monsters[monsters.length-1].x+80;
+      //temp.x = monsters[monsters.length-1].x+80;
+      temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].look.y);
       monsters.push(temp);
       person.money++;
     }
@@ -130,7 +170,7 @@ function draw() {
     person.color = 150;
     person.money--;
     let temp = monsters.shift();
-    temp.x = monsters[monsters.length-1].x+80;
+    temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].y);
     monsters.push(temp);
   }
 
@@ -149,23 +189,43 @@ function draw() {
 	}
 
   if(pressed) {
-    bulletWord.show();
-    bulletWord.shot();
-    if(bulletWord.x >= x) {
-      console.log(k);
+    reward_sound.play()
       //if (k == images.length) k = 0;
       img = loadImage(images[k]);
+
       person.money++;
-      bulletWord.x = 55;
-      x = 800;
+      //bulletWord.x = 55;
+      x = 1000;
       console.log(person.money);
       pressed = false;
-    }
+    //bulletWord.show();
+    //bulletWord.shot();
+    //if(bulletWord.x >= x) {}
+  }
+  else if(x < 0){
+    if(k == images.length-1) k =0;
+    else k++;
+    img = loadImage(images[k]);
+    x = 1000;
   }
 
   image(img, x,250,50,50);
-  //ellipse(x, 270, 40, 40);
   x -= 1.6;
+   var vol = mic.getLevel();
+   volHistory.push(vol);
+   stroke(0, 0, 0, 90);
+   strokeWeight(4);
+   noFill();
+   beginShape();
+   for (var i = 0; i < volHistory.length; i++) {
+     var y = map(volHistory[i], 0, 1, height / 1.4, 0);
+     vertex(i, y);
+   }
+   endShape();
+
+   if (volHistory.length > width) {
+     volHistory.splice(0, 1);
+   }
 }
 
 function keyPressed() {
