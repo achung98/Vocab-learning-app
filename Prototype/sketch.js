@@ -72,7 +72,7 @@ function setup() {
 
   person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 5, 255);
 
-  bullet = new Bullet(260, 470, 20, 20, 5);
+  bullet = new Bullet(260, 470, 20, 20, 5, 1);
   bulletWord = new Bullet(55, 268, 20, 20);
 
   img = loadImage(images[0]);
