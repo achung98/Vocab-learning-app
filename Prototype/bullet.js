@@ -4,7 +4,8 @@ class Bullet {
 		this.y = y;
 		this.r1 = r1;
 		this.r2 = r2;
-		this.speed = speed;
+		this.speed = speed
+		this.damage = damage;
 	}
 
 	shot(){

@@ -12,11 +12,14 @@ let pos = 0;
 let bg;
 pressed = false;
 x = 800;
+person = new Person(10, 540, 40, 60, 0, 255);
+bullet = new Bullet(55, 350, 20, 20, 5, 1);
+bulletWord = new Bullet(55, 268, 20, 20); 
 
 let monsters = [];
 let xMons, yMons;
 let price = [5, 3];
-let move = 0.75;
+let move = 0.5;
 let health = 1;
 let chase = false;
 
@@ -28,6 +31,7 @@ var img;
 var song_sound;
 var reward_sound;
 var k = 0;
+
 var images = ['assets/apple.png','assets/banana.png',
   'assets/computer.png','assets/house.png',
   'assets/glasses.png','assets/dog.png',
@@ -38,37 +42,42 @@ var images = ['assets/apple.png','assets/banana.png',
   ];
 
 
-
 //var gif;
 function setup() {
   createCanvas(1500, 700);
   //shot_sound = loadSound('assets/shot.mp3');
   reward_sound = loadSound('assets/reward.mp3');
-  
-  for(let i = 0; i < 20; i++) {
+
+  for(let i = 0; i < 20; i++){
+  let temp = i*(Math.random()*30+50);
+  if(i > 1) {
+    let temp2 = i*(Math.random()*30+50);
+    while(temp >= temp2) {
+      temp2 = i*(Math.random()*30+50);
+    }
+    temp = temp2;
+  }
+
   var mybird ;
   mybird = createImg("assets/trump.gif");
   mybird.size(80,80);
-  mybird.position(800+i*80,520);
+  mybird.position(800+temp,520);
 
 
   monsters.push(new Monster(800+i*80, 520, 20, 20, health,mybird));
-}
-
-
-
+  }
   // mic setup
   mic = new p5.AudioIn();
   mic.start();
 
-  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 0, 255);
+  person = new Person(loadImage('assets/Castle.png'), loadImage('assets/Cannon.png'), 5, 255);
 
-  bullet = new Bullet(260, 470, 20, 20, 5);
+  bullet = new Bullet(260, 470, 20, 20, 5, 1);
   bulletWord = new Bullet(55, 268, 20, 20);
 
   img = loadImage(images[0]);
 
-  bg = loadImage('assets/bg.png'); 
+  bg = loadImage('assets/bg.png');
 
   var words = ['apple','banana','computer','house','glasses','dog','chair','watch','truck','fire','car','ice cream','shoes','pencil','tiger'];
 
@@ -132,19 +141,15 @@ function draw() {
   background(bg);
 	person.show();
 
- 
-
-
   xMons = monsters[0].look.x;
   yMons = monsters[0].look.y;
 
   if(bullet.x >= xMons-15 && bullet.y >= yMons-15) {
     bullet.x = 260;
     bullet.y = 470;
-    monsters[0].health--;
-    if(!monsters[0].health) {
+    monsters[0].health -= bullet.damage;
+    if(monsters[0].health <= 0) {
       monsters[0].health = health;
-      console.log(monsters[0].health);
       let temp = monsters.shift();
       //temp.x = monsters[monsters.length-1].x+80;
       temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].look.y);
@@ -159,9 +164,15 @@ function draw() {
   text(`Money: ${person.money}`, 40, 70);
   text(`Upgrades: 1. Velocity: ${person.upgrades.velocity} 2. Power: ${person.upgrades.power}`, 40, 110);
 
-  if(person.x >= xMons-50) {
+  if(200 >= xMons-50) {
     person.color = 150;
     person.money--;
+    // no money the loose
+    if (person.money < 0) {
+      noLoop();
+      alert("Game Over~ You ran out of money =(" );
+      window.location.replace("index.html");
+    } 
     let temp = monsters.shift();
     temp.look.position(monsters[monsters.length-1].look.x+80,monsters[monsters.length-1].y);
     monsters.push(temp);
@@ -228,7 +239,7 @@ function keyPressed() {
     bullet.speed += 1;
   } else if(cont == 1) {
     price[1] += 2;
-    bullet.damage += 1;
+    bullet.damage += 0.35;
   }
     checkUpgrades();
 }

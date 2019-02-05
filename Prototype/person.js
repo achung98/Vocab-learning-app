@@ -5,7 +5,6 @@ class Person {
 		this.money = money;
 		this.color = color;
 		this.upgrades = {velocity: 0, power: 0};
-		this.power = 1;
 	}
 
 	show() {
